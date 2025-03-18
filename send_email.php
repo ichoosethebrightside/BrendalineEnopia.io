@@ -1,20 +1,11 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST["name"]);
-    $email = htmlspecialchars($_POST["email"]);
-    $message = htmlspecialchars($_POST["message"]);
-
-    $to = "enopia.brendaline@gmail.com";
-    $subject = "New Contact Form Message";
-    $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
-    $headers = "From: $email";
-
-    if (mail($to, $subject, $body, $headers)) {
-        echo "Message sent successfully!";
-    } else {
-        echo "Message sending failed.";
-    }
+    echo "Thank you so much for reaching out! 😊<br><br>
+    We truly appreciate your time and effort in contacting us. Your message is important, and we are grateful for your interest. Rest assured that we will carefully review your message and get back to you as soon as possible.<br><br>
+    In the meantime, feel free to explore more of our content, and if you have any urgent concerns, don’t hesitate to reach out again. Wishing you a wonderful day ahead! 🌸✨<br><br>
+    Best regards,<br>
+    Brendaline";
 } else {
-    echo "Invalid request.";
+    echo "Oops! Something went wrong. Please try again.";
 }
 ?>
