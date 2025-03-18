@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+        .field label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .actions {
+            text-align: center;
+        }
+        .actions button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .actions button:hover {
+            background: #218838;
+        }
+        #responseMessage {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #dff0d8;
+            border-left: 5px solid #28a745;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="contactForm">
+        <div class="fields">
+            <div class="field">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required />
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required />
+            </div>
+            <div class="field">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" rows="3" required></textarea>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="submit">Send Message</button>
+        </div>
+    </form>
+
+    <div id="responseMessage">
+        <strong>Thank you for reaching out! 😊</strong><br><br>
+        We truly appreciate your time and effort in contacting us. Your message is valuable, and we will review it as soon as possible.<br><br>
+        In the meantime, feel free to explore more of our content. Have a wonderful day ahead! 🌸✨<br><br>
+        <strong>Best regards,<br>The Team</strong>
+    </div>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent actual form submission
+            
+            document.getElementById("responseMessage").style.display = "block";  
+        });
+    </script>
+
+</body>
+</html>
