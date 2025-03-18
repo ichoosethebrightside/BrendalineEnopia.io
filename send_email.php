@@ -1,21 +1,31 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Collect form data
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $message = htmlspecialchars($_POST['message']);
+    // Validate and sanitize form data
+    $name = htmlspecialchars(trim($_POST['name']));
+    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+    $message = htmlspecialchars(trim($_POST['message']));
+
+    // Check for empty fields
+    if (empty($name) || empty($email) || empty($message)) {
+        echo "All fields are required.";
+        exit;
+    }
 
     // Recipient email address
     $to = 'your-email@example.com'; // Replace with your email address
     $subject = 'Contact Form Submission';
-    
+
     // Create email content
-    $email_body = "Name: $name\n";
-    $email_body .= "Email: $email\n";
-    $email_body .= "Message:\n$message\n";
+    $email_body = "Name: $name\r\n";
+    $email_body .= "Email: $email\r\n";
+    $email_body .= "Message:\r\n$message\r\n";
+
+    // Email headers
+    $headers = "From: no-reply@example.com\r\n"; // Use a fixed sender domain
+    $headers .= "Reply-To: $email\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
     // Send email
-    $headers = "From: $email";
     if (mail($to, $subject, $email_body, $headers)) {
         echo "Message sent successfully.";
     } else {
@@ -25,3 +35,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "Invalid request method.";
 }
 ?>
+
