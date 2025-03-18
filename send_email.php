@@ -1,26 +1,33 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST["name"]);
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $message = htmlspecialchars($_POST["message"]);
+    $name = strip_tags(trim($_POST["name"]));
+    $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+    $message = trim($_POST["message"]);
 
-    // Your email address where you want to receive messages
-    $to = "enopia.brendaline@gmail.com";  
+    if (empty($name) || empty($email) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400);
+        echo "Please complete the form correctly.";
+        exit;
+    }
+
+    $recipient = "enopia.brendaline@gmail.com";  // Replace with your email
     $subject = "New Contact Form Submission from $name";
-    $headers = "From: $email\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8";
+    
+    $email_content = "Name: $name\n";
+    $email_content .= "Email: $email\n\n";
+    $email_content .= "Message:\n$message\n";
 
-    $body = "You have received a new message from your website contact form.\n\n";
-    $body .= "Name: $name\n";
-    $body .= "Email: $email\n";
-    $body .= "Message:\n$message\n";
+    $email_headers = "From: $name <$email>";
 
-    // Send Email
-    if (mail($to, $subject, $body, $headers)) {
-        echo "Message sent successfully!";
+    if (mail($recipient, $subject, $email_content, $email_headers)) {
+        http_response_code(200);
+        echo "Thank you! Your message has been sent.";
     } else {
-        echo "Failed to send message. Please try again later.";
+        http_response_code(500);
+        echo "Oops! Something went wrong, and we couldn't send your message.";
     }
 } else {
-    echo "Invalid request.";
+    http_response_code(403);
+    echo "There was a problem with your submission, please try again.";
 }
 ?>
