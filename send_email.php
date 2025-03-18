@@ -1,38 +1,26 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate and sanitize form data
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
-    $message = htmlspecialchars(trim($_POST['message']));
+    $name = htmlspecialchars($_POST["name"]);
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $message = htmlspecialchars($_POST["message"]);
 
-    // Check for empty fields
-    if (empty($name) || empty($email) || empty($message)) {
-        echo "All fields are required.";
-        exit;
-    }
+    // Your email address where you want to receive messages
+    $to = "enopia.brendaline@gmail.com";  
+    $subject = "New Contact Form Submission from $name";
+    $headers = "From: $email\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8";
 
-    // Recipient email address
-    $to = 'your-email@example.com'; // Replace with your email address
-    $subject = 'Contact Form Submission';
+    $body = "You have received a new message from your website contact form.\n\n";
+    $body .= "Name: $name\n";
+    $body .= "Email: $email\n";
+    $body .= "Message:\n$message\n";
 
-    // Create email content
-    $email_body = "Name: $name\r\n";
-    $email_body .= "Email: $email\r\n";
-    $email_body .= "Message:\r\n$message\r\n";
-
-    // Email headers
-    $headers = "From: no-reply@example.com\r\n"; // Use a fixed sender domain
-    $headers .= "Reply-To: $email\r\n";
-    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
-    // Send email
-    if (mail($to, $subject, $email_body, $headers)) {
-        echo "Message sent successfully.";
+    // Send Email
+    if (mail($to, $subject, $body, $headers)) {
+        echo "Message sent successfully!";
     } else {
-        echo "There was a problem sending your message.";
+        echo "Failed to send message. Please try again later.";
     }
 } else {
-    echo "Invalid request method.";
+    echo "Invalid request.";
 }
 ?>
-
