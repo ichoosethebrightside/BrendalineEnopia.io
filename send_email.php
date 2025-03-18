@@ -1,33 +1,40 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = strip_tags(trim($_POST["name"]));
-    $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
-    $message = trim($_POST["message"]);
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-    if (empty($name) || empty($email) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        http_response_code(400);
-        echo "Please complete the form correctly.";
-        exit;
+require 'vendor/autoload.php';
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $name = htmlspecialchars($_POST['name']);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $message = htmlspecialchars($_POST['message']);
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format");
     }
 
-    $recipient = "enopia.brendaline@gmail.com";  // Replace with your email
-    $subject = "New Contact Form Submission from $name";
-    
-    $email_content = "Name: $name\n";
-    $email_content .= "Email: $email\n\n";
-    $email_content .= "Message:\n$message\n";
+    $mail = new PHPMailer(true);
+    try {
+        // SMTP Configuration
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'your_email@gmail.com'; // Your Gmail address
+        $mail->Password = 'your_password'; // Use App Password instead of Gmail password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-    $email_headers = "From: $name <$email>";
+        // Email Content
+        $mail->setFrom($email, $name);
+        $mail->addAddress('your_email@gmail.com'); // Your receiving email
+        $mail->Subject = 'New Contact Form Submission';
+        $mail->Body = "Name: $name\nEmail: $email\nMessage: $message";
 
-    if (mail($recipient, $subject, $email_content, $email_headers)) {
-        http_response_code(200);
-        echo "Thank you! Your message has been sent.";
-    } else {
-        http_response_code(500);
-        echo "Oops! Something went wrong, and we couldn't send your message.";
+        $mail->send();
+        echo "Message sent successfully!";
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 } else {
-    http_response_code(403);
-    echo "There was a problem with your submission, please try again.";
+    echo "405 Method Not Allowed";
 }
-?>
