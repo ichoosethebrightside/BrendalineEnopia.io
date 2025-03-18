@@ -2,39 +2,40 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+require 'vendor/autoload.php'; // If using Composer
+// require 'PHPMailer/PHPMailer.php'; // If using manual download
+// require 'PHPMailer/SMTP.php';
+// require 'PHPMailer/Exception.php';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = htmlspecialchars($_POST['name']);
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $email = htmlspecialchars($_POST['email']);
     $message = htmlspecialchars($_POST['message']);
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die("Invalid email format");
-    }
-
+    
     $mail = new PHPMailer(true);
+
     try {
-        // SMTP Configuration
+        // SMTP Settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = 'smtp.gmail.com'; // Change for other providers
         $mail->SMTPAuth = true;
-        $mail->Username = 'your_email@gmail.com'; // Your Gmail address
-        $mail->Password = 'your_password'; // Use App Password instead of Gmail password
+        $mail->Username = 'your-email@gmail.com'; // Your Gmail
+        $mail->Password = 'your-app-password'; // Use an App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
-
+        
         // Email Content
-        $mail->setFrom($email, $name);
-        $mail->addAddress('your_email@gmail.com'); // Your receiving email
+        $mail->setFrom('your-email@gmail.com', 'Your Name');
+        $mail->addAddress('your-email@gmail.com'); // Where to send the email
+        $mail->isHTML(true);
         $mail->Subject = 'New Contact Form Submission';
-        $mail->Body = "Name: $name\nEmail: $email\nMessage: $message";
-
+        $mail->Body = "<strong>Name:</strong> $name <br><strong>Email:</strong> $email <br><strong>Message:</strong> $message";
+        
         $mail->send();
-        echo "Message sent successfully!";
+        echo 'Success';
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        echo "Error: {$mail->ErrorInfo}";
     }
 } else {
-    echo "405 Method Not Allowed";
+    echo '405 Method Not Allowed';
 }
