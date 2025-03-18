@@ -4,93 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: auto;
-        }
-        .field {
-            margin-bottom: 15px;
-        }
-        .field label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .field input, .field textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .actions {
-            text-align: center;
-        }
-        .actions button {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .actions button:hover {
-            background: #218838;
-        }
-        #responseMessage {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background: #dff0d8;
-            border-left: 5px solid #28a745;
-            font-size: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your CSS file if needed -->
 </head>
 <body>
 
-    <form id="contactForm">
-        <div class="fields">
-            <div class="field">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" required />
+    <!-- Contact Form -->
+    <section>
+        <h2>Contact Us</h2>
+        <form method="POST" action="https://formspree.io/f/mdkekbzb" id="contactForm">
+            <div class="fields">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" required />
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" required />
+                </div>
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" rows="3" required></textarea>
+                </div>
             </div>
-            <div class="field">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" required />
-            </div>
-            <div class="field">
-                <label for="message">Message</label>
-                <textarea name="message" id="message" rows="3" required></textarea>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit">Send Message</button>
-        </div>
-    </form>
+            <ul class="actions">
+                <li><input type="submit" value="Send Message" /></li>
+            </ul>
+        </form>
 
-    <div id="responseMessage">
-        <strong>Thank you for reaching out! 😊</strong><br><br>
-        We truly appreciate your time and effort in contacting us. Your message is valuable, and we will review it as soon as possible.<br><br>
-        In the meantime, feel free to explore more of our content. Have a wonderful day ahead! 🌸✨<br><br>
-        <strong>Best regards,<br>The Team</strong>
+        <!-- Success Message -->
+        <div id="successMessage" style="display: none; color: green; margin-top: 10px;">
+            🎉 Thank you for reaching out! Your message has been sent successfully.  
+            We truly appreciate your time and effort in contacting us.  
+            Expect a response from us soon! 😊
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <section class="split contact">
+            <section class="alt">
+                <h3>Address</h3>
+                <p>A. Lopez St., Calamba<br />Cebu City, 6000</p>
+            </section>
+            <section>
+                <h3>Email</h3>
+                <p><a href="mailto:enopia.brendaline@gmail.com">enopia.brendaline@gmail.com</a></p>
+            </section>
+        </section>
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; 2025 My Website</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
     </div>
 
+    <!-- JavaScript for Form Submission -->
     <script>
         document.getElementById("contactForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent actual form submission
-            
-            document.getElementById("responseMessage").style.display = "block";  
+            event.preventDefault(); // Prevent default form submission
+            var form = this;
+
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById("successMessage").style.display = "block"; // Show success message
+                    form.reset(); // Clear form fields
+                } else {
+                    alert("Oops! Something went wrong. Please try again later.");
+                }
+            }).catch(error => {
+                alert("There was an error submitting your message.");
+            });
         });
     </script>
 
