@@ -165,59 +165,90 @@
 
 						<!-- AI Model Demo Section -->
 							<section class="post featured">
-								<header class="major">
-									<h2>AI Model Interactive Demo<br />
-									(Fruit Ripeness & Tree Diameter)</h2>
-									<p>Try one of my real AI models directly in this website.  
-									Upload an image and let the model predict ripeness or estimate tree diameter.</p>
-								</header>
-
-								<div style="text-align:center;">
-									<input type="file" id="imageUpload" accept="image/*" /><br><br>
-									<button id="predictBtn" class="button large">Run AI Model</button>
-									<p id="predictionResult" style="font-size:18px; margin-top:20px;"></p>
-									<img id="previewImage" style="max-width:300px; margin-top:20px; display:none;" />
-								</div>
+							  <header class="major">
+							    <h2>AI Model Interactive Demo<br />
+							      (Fruit Ripeness & Tree Diameter)
+							    </h2>
+							    <p>Try one of my real AI models directly on this website.  
+							      Upload an image and let the model predict ripeness or estimate tree diameter.
+							    </p>
+							  </header>
+							
+							  <div style="text-align:center;">
+							    <input type="file" id="imageUpload" accept="image/*" /><br><br>
+							    <button id="predictBtn" class="button large">Run AI Model</button>
+							    <p id="predictionResult" style="font-size:18px; margin-top:20px;"></p>
+							    <img id="previewImage" style="max-width:300px; margin-top:20px; display:none;" />
+							  </div>
 							</section>
-
-							<!-- TensorFlow.js and your AI loader -->
+							
+							<!-- TensorFlow.js -->
 							<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.0.0"></script>
-
+							
 							<script>
 							let model;
-
-							// Load H5 model (must be stored in GitHub repo or same folder)
+							const classNames = ['ripe', 'unripe', 'overripe', 'not_breadfruit'];
+							
+							// Load the model
 							async function loadModel() {
-								model = await tf.loadLayersModel("tfjs_model/model.json");  
-								console.log("Model loaded!");
+							  try {
+							    model = await tf.loadLayersModel("tfjs_model/model.json");
+							    console.log("Model loaded!");
+							    document.getElementById("predictionResult").innerText = "Model loaded! Upload an image to start.";
+							  } catch (error) {
+							    console.error("Failed to load model:", error);
+							    document.getElementById("predictionResult").innerText = "Failed to load model. Check console.";
+							  }
 							}
-
+							
 							loadModel();
-
+							
 							document.getElementById("predictBtn").onclick = async () => {
-								const imgInput = document.getElementById("imageUpload").files[0];
-								if (!imgInput) {
-									alert("Please upload an image.");
-									return;
-								}
-
-								const img = document.getElementById("previewImage");
-								img.src = URL.createObjectURL(imgInput);
-								img.style.display = "block";
-
-								const tensor = tf.browser.fromPixels(img)
-									.resizeBilinear([224, 224])
-									.toFloat()
-									.div(tf.scalar(255))
-									.expandDims();
-
-								const prediction = model.predict(tensor);
-								prediction.array().then(values => {
-									document.getElementById("predictionResult").innerText =
-										"Prediction: " + JSON.stringify(values);
-								});
+							  if (!model) {
+							    alert("Model is not loaded yet. Please wait.");
+							    return;
+							  }
+							
+							  const imgInput = document.getElementById("imageUpload").files[0];
+							  if (!imgInput) {
+							    alert("Please upload an image.");
+							    return;
+							  }
+							
+							  const img = document.getElementById("previewImage");
+							  img.src = URL.createObjectURL(imgInput);
+							  img.style.display = "block";
+							
+							  img.onload = async () => {
+							    try {
+							      // Preprocess image to match model input
+							      const tensor = tf.browser.fromPixels(img)
+							        .resizeBilinear([224, 224])
+							        .toFloat()
+							        .div(tf.scalar(255))
+							        .expandDims();
+							
+							      // Make prediction
+							      const prediction = model.predict(tensor);
+							      const values = await prediction.array();
+							
+							      // Get class and confidence
+							      const predictedIndex = values[0].indexOf(Math.max(...values[0]));
+							      const predictedClass = classNames[predictedIndex];
+							      const confidence = (Math.max(...values[0]) * 100).toFixed(2);
+							
+							      // Display result
+							      document.getElementById("predictionResult").innerText =
+							        `Prediction: ${predictedClass} (${confidence}%)`;
+							
+							    } catch (error) {
+							      console.error("Prediction error:", error);
+							      document.getElementById("predictionResult").innerText = "Prediction failed. Check console.";
+							    }
+							  };
 							};
 							</script>
+
 
 						<!-- Footer 
 							<footer>
@@ -311,3 +342,4 @@
 
 </body>
 </html>
+
