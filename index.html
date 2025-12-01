@@ -190,10 +190,10 @@
 							let model;
 							const classNames = ['ripe', 'unripe', 'overripe', 'not_breadfruit'];
 							
-							// Load the TFJS model
+							// Load the TFJS model from raw GitHub URL
 							async function loadModel() {
 							  try {
-							    model = await tf.loadLayersModel("tfjs_model/model.json");
+							    model = await tf.loadLayersModel("https://raw.githubusercontent.com/ichoosethebrightside/BrendalineEnopia.io/main/tfjs_model/model.json");
 							    console.log("Model loaded!");
 							    document.getElementById("predictionResult").innerText = "Model loaded! Upload an image to start.";
 							  } catch (error) {
@@ -222,10 +222,11 @@
 							
 							  img.onload = async () => {
 							    try {
-							      // Preprocess image dynamically to match model input
-							      const inputShape = model.inputs[0].shape; // e.g., [null,224,224,3]
+							      // Get model input shape dynamically
+							      const inputShape = model.inputs[0].shape; // e.g., [null, 224, 224, 3]
 							      const [height, width] = [inputShape[1], inputShape[2]];
 							
+							      // Preprocess image
 							      const tensor = tf.browser.fromPixels(img)
 							        .resizeBilinear([height, width])
 							        .toFloat()
@@ -236,6 +237,7 @@
 							      const prediction = model.predict(tensor);
 							      const values = await prediction.array();
 							
+							      // Find predicted class and confidence
 							      const predictedIndex = values[0].indexOf(Math.max(...values[0]));
 							      const predictedClass = classNames[predictedIndex];
 							      const confidence = (Math.max(...values[0]) * 100).toFixed(2);
@@ -345,5 +347,6 @@
 
 </body>
 </html>
+
 
 
