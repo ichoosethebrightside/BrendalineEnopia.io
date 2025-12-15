@@ -168,17 +168,20 @@
 							<section class="post featured">
 							  <header class="major">
 							    <h2>AI Model Interactive Demo<br />
-							      (Fruit Ripeness & Tree Diameter)
+							      (Fruit Ripeness – Breadfruit)
 							    </h2>
-							    <p>Try one of my real AI models directly on this website.  
-							      Upload an image and let the model predict ripeness or estimate tree diameter.
+							    <p>
+							      Try one of my real AI models directly on this website.<br>
+							      Upload an image and let the model predict ripeness.
 							    </p>
 							  </header>
 							
 							  <div style="text-align:center;">
 							    <input type="file" id="imageUpload" accept="image/*" /><br><br>
 							    <button id="predictBtn" class="button large">Run AI Model</button>
-							    <p id="predictionResult" style="font-size:18px; margin-top:20px;">Loading model...</p>
+							    <p id="predictionResult" style="font-size:18px; margin-top:20px;">
+							      Loading model...
+							    </p>
 							    <img id="previewImage" style="max-width:300px; margin-top:20px; display:none;" />
 							  </div>
 							</section>
@@ -188,17 +191,30 @@
 							
 							<script>
 							let model;
-							const classNames = ['ripe', 'unripe', 'overripe', 'not_breadfruit'];
 							
-							// Load the TFJS model from raw GitHub URL
+							/**
+							 * IMPORTANT:
+							 * LabelEncoder sorts alphabetically in Python
+							 * ['not_breadfruit', 'overripe', 'ripe', 'unripe']
+							 */
+							const classNames = [
+							  'not_breadfruit',
+							  'overripe',
+							  'ripe',
+							  'unripe'
+							];
+							
+							// Load model from GitHub Pages (NOT raw.githubusercontent.com)
 							async function loadModel() {
 							  try {
-							    model = await tf.loadLayersModel("https://raw.githubusercontent.com/ichoosethebrightside/BrendalineEnopia.io/main/tfjs_model/model.json");
-							    console.log("Model loaded!");
-							    document.getElementById("predictionResult").innerText = "Model loaded! Upload an image to start.";
+							    model = await tf.loadLayersModel("./tfjs_model/model.json");
+							    console.log("✅ Model loaded successfully");
+							    document.getElementById("predictionResult").innerText =
+							      "Model loaded! Upload an image to start.";
 							  } catch (error) {
-							    console.error("Failed to load model:", error);
-							    document.getElementById("predictionResult").innerText = "Failed to load model. Check console.";
+							    console.error("❌ Failed to load model:", error);
+							    document.getElementById("predictionResult").innerText =
+							      "Failed to load model. Check console.";
 							  }
 							}
 							
@@ -206,7 +222,7 @@
 							
 							document.getElementById("predictBtn").onclick = async () => {
 							  if (!model) {
-							    alert("Model is not loaded yet. Please wait.");
+							    alert("Model is still loading. Please wait.");
 							    return;
 							  }
 							
@@ -222,36 +238,43 @@
 							
 							  img.onload = async () => {
 							    try {
-							      // Get model input shape dynamically
-							      const inputShape = model.inputs[0].shape; // e.g., [null, 224, 224, 3]
-							      const [height, width] = [inputShape[1], inputShape[2]];
+							      const resultText = document.getElementById("predictionResult");
+							      resultText.innerText = "Running prediction...";
 							
-							      // Preprocess image
-							      const tensor = tf.browser.fromPixels(img)
-							        .resizeBilinear([height, width])
-							        .toFloat()
-							        .div(tf.scalar(255))
-							        .expandDims();
+							      // Get input size from model
+							      const [ , height, width ] = model.inputs[0].shape;
 							
-							      // Make prediction
-							      const prediction = model.predict(tensor);
+							      const prediction = tf.tidy(() => {
+							        const tensor = tf.browser.fromPixels(img)
+							          .resizeBilinear([height, width])
+							          .toFloat()
+							          .div(255)
+							          .expandDims();
+							
+							        return model.predict(tensor);
+							      });
+							
 							      const values = await prediction.array();
+							      prediction.dispose();
 							
-							      // Find predicted class and confidence
-							      const predictedIndex = values[0].indexOf(Math.max(...values[0]));
+							      const scores = values[0];
+							      const maxScore = Math.max(...scores);
+							      const predictedIndex = scores.indexOf(maxScore);
 							      const predictedClass = classNames[predictedIndex];
-							      const confidence = (Math.max(...values[0]) * 100).toFixed(2);
+							      const confidence = (maxScore * 100).toFixed(2);
 							
-							      document.getElementById("predictionResult").innerText =
+							      resultText.innerText =
 							        `Prediction: ${predictedClass} (${confidence}%)`;
 							
 							    } catch (error) {
-							      console.error("Prediction error:", error);
-							      document.getElementById("predictionResult").innerText = "Prediction failed. Check console.";
+							      console.error("❌ Prediction error:", error);
+							      document.getElementById("predictionResult").innerText =
+							        "Prediction failed. Check console.";
 							    }
 							  };
 							};
 							</script>
+
 
 
 
@@ -347,6 +370,7 @@
 
 </body>
 </html>
+
 
 
 
