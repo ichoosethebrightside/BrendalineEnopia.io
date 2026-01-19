@@ -206,72 +206,77 @@
 							
 							// Load model from GitHub Pages (NOT raw.githubusercontent.com)
 							async function loadModel() {
-							  try {
-							    model = await tf.loadLayersModel("./tfjs_modelv1/modelv1.json", {strict: false});
-							    console.log("✅ Model loaded successfully");
-							    document.getElementById("predictionResult").innerText =
-							      "Model loaded! Upload an image to start.";
-							  } catch (error) {
-							    console.error("❌ Failed to load model:", error);
-							    document.getElementById("predictionResult").innerText =
-							      "Failed to load model. Check console.";
-							  }
+							    try {
+							        // We remove strict:false here because your repaired JSON should now be correct.
+							        // We add a cache-buster to ensure the browser loads your NEW fixed model.
+							        const modelUrl = "./tfjs_modelv1/modelv1.json?v=" + new Date().getTime();
+							        model = await tf.loadLayersModel(modelUrl);
+							        
+							        console.log("✅ Model loaded successfully");
+							        document.getElementById("predictionResult").innerText =
+							            "Model ready! Upload an image to start.";
+							    } catch (error) {
+							        console.error("❌ Failed to load model:", error);
+							        document.getElementById("predictionResult").innerText =
+							            "Failed to load model. Check console for weight errors.";
+							    }
 							}
 							
 							loadModel();
 							
 							document.getElementById("predictBtn").onclick = async () => {
-							  if (!model) {
-							    alert("Model is still loading. Please wait.");
-							    return;
-							  }
-							
-							  const imgInput = document.getElementById("imageUpload").files[0];
-							  if (!imgInput) {
-							    alert("Please upload an image.");
-							    return;
-							  }
-							
-							  const img = document.getElementById("previewImage");
-							  img.src = URL.createObjectURL(imgInput);
-							  img.style.display = "block";
-							
-							  img.onload = async () => {
-							    try {
-							      const resultText = document.getElementById("predictionResult");
-							      resultText.innerText = "Running prediction...";
-							
-							      // Get input size from model
-							      const [ , height, width ] = model.inputs[0].shape;
-							
-							      const prediction = tf.tidy(() => {
-							        const tensor = tf.browser.fromPixels(img)
-							          .resizeBilinear([height, width])
-							          .toFloat()
-							          .div(255)
-							          .expandDims();
-							
-							        return model.predict(tensor);
-							      });
-							
-							      const values = await prediction.array();
-							      prediction.dispose();
-							
-							      const scores = values[0];
-							      const maxScore = Math.max(...scores);
-							      const predictedIndex = scores.indexOf(maxScore);
-							      const predictedClass = classNames[predictedIndex];
-							      const confidence = (maxScore * 100).toFixed(2);
-							
-							      resultText.innerText =
-							        `Prediction: ${predictedClass} (${confidence}%)`;
-							
-							    } catch (error) {
-							      console.error("❌ Prediction error:", error);
-							      document.getElementById("predictionResult").innerText =
-							        "Prediction failed. Check console.";
+							    if (!model) {
+							        alert("Model is still loading. Please wait.");
+							        return;
 							    }
-							  };
+							
+							    const imgInput = document.getElementById("imageUpload").files[0];
+							    if (!imgInput) {
+							        alert("Please upload an image.");
+							        return;
+							    }
+							
+							    const img = document.getElementById("previewImage");
+							    img.src = URL.createObjectURL(imgInput);
+							    img.style.display = "block";
+							
+							    img.onload = async () => {
+							        try {
+							            const resultText = document.getElementById("predictionResult");
+							            resultText.innerText = "Analyzing image...";
+							
+							            const tensor = tf.tidy(() => {
+							                return tf.browser.fromPixels(img)
+							                    .resizeBilinear([224, 224]) // Match MobileNetV2 input size
+							                    .toFloat()
+							                    .div(127.5)      // Scale pixels from [0, 255] to [0, 2]
+							                    .sub(1.0)        // Offset pixels to [-1, 1] (CRITICAL)
+							                    .expandDims(0);
+							            });
+							
+							            const prediction = await model.predict(tensor);
+							            const scores = await prediction.data();
+							            
+							            // Log scores to console to see the raw math
+							            console.log("Raw Prediction Scores:", scores);
+							
+							            const maxScore = Math.max(...scores);
+							            const predictedIndex = scores.indexOf(maxScore);
+							            const predictedClass = classNames[predictedIndex];
+							            const confidence = (maxScore * 100).toFixed(2);
+							
+							            resultText.innerHTML = `<strong>Prediction:</strong> ${predictedClass}<br><strong>Confidence:</strong> ${confidence}%`;
+							
+							            // Cleanup memory
+							            tensor.dispose();
+							            prediction.dispose();
+							
+							        } catch (error) {
+							            console.error("❌ Prediction error:", error);
+							            document.getElementById("predictionResult").innerText =
+							                "Prediction failed. Check console.";
+							        }
+							    };
 							};
 							</script>
 
@@ -370,6 +375,7 @@
 
 </body>
 </html>
+
 
 
 
