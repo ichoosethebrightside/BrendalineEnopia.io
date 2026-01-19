@@ -207,7 +207,7 @@
 							// Load model from GitHub Pages (NOT raw.githubusercontent.com)
 							async function loadModel() {
 							  try {
-							    model = await tf.loadLayersModel("./tfjs_modelv1/modelv1.json");
+							    model = await tf.loadLayersModel("./tfjs_modelv1/modelv1.json", {strict: false});
 							    console.log("✅ Model loaded successfully");
 							    document.getElementById("predictionResult").innerText =
 							      "Model loaded! Upload an image to start.";
@@ -370,6 +370,7 @@
 
 </body>
 </html>
+
 
 
 
