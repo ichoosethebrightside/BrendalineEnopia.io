@@ -25,7 +25,7 @@
 					},
 					{
 						"class_name": "Conv2D",
-						"config": { "name": "Conv1", "filters": 32, "kernel_size": [3, 3], "strides": [2, 2], "padding": "same", "activation": "linear", "use_bias": false },
+						"config": { "name": "Conv1", "filters": 32, "kernelSize": [3, 3], "strides": [2, 2], "padding": "same", "activation": "linear", "use_bias": false },
 						"name": "Conv1",
 						"inbound_nodes": [[["input_image", 0, 0]]]
 					},
@@ -43,7 +43,7 @@
 					},
 					{
 						"class_name": "DepthwiseConv2D",
-						"config": { "name": "expanded_conv_depthwise", "depth_multiplier": 1, "kernel_size": [3, 3], "strides": [1, 1], "padding": "same" },
+						"config": { "name": "expanded_conv_depthwise", "depthMultiplier": 1, "kernelSize": [3, 3], "strides": [1, 1], "padding": "same" },
 						"name": "expanded_conv_depthwise",
 						"inbound_nodes": [[["Conv1_relu", 0, 0]]]
 					},
@@ -61,7 +61,7 @@
 					},
 					{
 						"class_name": "Conv2D",
-						"config": { "name": "expanded_conv_project", "filters": 16, "kernel_size": [1, 1], "strides": [1, 1] },
+						"config": { "name": "expanded_conv_project", "filters": 16, "kernelSize": [1, 1], "strides": [1, 1] },
 						"name": "expanded_conv_project",
 						"inbound_nodes": [[["expanded_conv_depthwise_relu", 0, 0]]]
 					},
@@ -73,7 +73,7 @@
 					},
 					{
 						"class_name": "Conv2D",
-						"config": { "name": "block_1_expand", "filters": 96, "kernel_size": [1, 1] },
+						"config": { "name": "block_1_expand", "filters": 96, "kernelSize": [1, 1] },
 						"name": "block_1_expand",
 						"inbound_nodes": [[["expanded_conv_project_BN", 0, 0]]]
 					},
@@ -97,7 +97,7 @@
 					},
 					{
 						"class_name": "DepthwiseConv2D",
-						"config": { "name": "block_1_depthwise", "kernel_size": [3, 3], "strides": [2, 2] },
+						"config": { "name": "block_1_depthwise", "kernelSize": [3, 3], "strides": [2, 2] },
 						"name": "block_1_depthwise",
 						"inbound_nodes": [[["block_1_pad", 0, 0]]]
 					},
@@ -115,7 +115,7 @@
 					},
 					{
 						"class_name": "Conv2D",
-						"config": { "name": "block_1_project", "filters": 24, "kernel_size": [1, 1] },
+						"config": { "name": "block_1_project", "filters": 24, "kernelSize": [1, 1] },
 						"name": "block_1_project",
 						"inbound_nodes": [[["block_1_depthwise_relu", 0, 0]]]
 					},
@@ -127,7 +127,7 @@
 					},
 					{
 						"class_name": "Conv2D",
-						"config": { "name": "block_2_expand", "filters": 144, "kernel_size": [1, 1] },
+						"config": { "name": "block_2_expand", "filters": 144, "kernelSize": [1, 1] },
 						"name": "block_2_expand",
 						"inbound_nodes": [[["block_1_project_BN", 0, 0]]]
 					},
@@ -145,7 +145,7 @@
 					},
 					{
 						"class_name": "DepthwiseConv2D",
-						"config": { "name": "block_2_depthwise", "kernel_size": [3, 3], "strides": [1, 1] },
+						"config": { "name": "block_2_depthwise", "kernelSize": [3, 3], "strides": [1, 1] },
 						"name": "block_2_depthwise",
 						"inbound_nodes": [[["block_2_expand_relu", 0, 0]]]
 					},
@@ -163,7 +163,7 @@
 					},
 					{
 						"class_name": "Conv2D",
-						"config": { "name": "block_2_project", "filters": 24, "kernel_size": [1, 1] },
+						"config": { "name": "block_2_project", "filters": 24, "kernelSize": [1, 1] },
 						"name": "block_2_project",
 						"inbound_nodes": [[["block_2_depthwise_relu", 0, 0]]]
 					},
