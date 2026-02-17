@@ -5,6 +5,7 @@
 	Massively by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
 */
 
 html, body, div, span, applet, object,
@@ -4687,3 +4688,21 @@ input, select, textarea {
 		}
 
 	}
+
+#footer .split.contact section {
+    display: block !important;
+    float: none !important;
+}
+
+#footer .split.contact section h3 {
+    display: block !important;
+    float: none !important;
+    clear: both;
+}
+
+#footer .split.contact section p {
+    display: block !important;
+    float: none !important;
+    clear: both;
+    margin-top: 0.5em;
+}
