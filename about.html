@@ -7,11 +7,24 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<style>
-			/* CSS Protection Layer */
+			/* CSS Protection & Sizing */
 			.protected-img {
 				pointer-events: none;       /* Makes image "un-clickable" */
 				user-select: none;          /* Prevents highlighting */
-				-webkit-user-drag: none;    /* Prevents dragging in Chrome/Safari */
+				-webkit-user-drag: none;    /* Prevents dragging */
+				
+				/* Sizing to 2x2 inches approx (192px) */
+				width: 192px;
+				height: 192px;
+				object-fit: cover;          /* Ensures the photo isn't squished */
+				border-radius: 8px;         /* Optional: slightly rounded corners */
+			}
+
+			/* Center the image since it's no longer full-width */
+			.image-container {
+				display: flex;
+				justify-content: center;
+				margin-bottom: 2em;
 			}
 		</style>
 	</head>
@@ -39,13 +52,13 @@
 						<p>Data Analyst | Data Engineer (Aspiring) | AI & Automation Enthusiast</p>
 					</header>
 
-					<div class="image main">
+					<div class="image-container">
 						<img src="images/profile.jpg" alt="Brendaline Enopia" class="protected-img" oncontextmenu="return false;" />
 					</div>
 
 					<p>I’m a data-driven professional with experience building <strong>end-to-end data workflows</strong>, validating datasets, and transforming complex information into actionable insights. My work spans data integration, ETL development, analytics, machine learning experimentation, and workflow automation.</p>
 					
-					<p>I’m passionate about turning <strong>messy data into clarity</strong>—whether through analytics, model building, or process optimization. I enjoy designing scalable pipelines, improving data quality, and creating tools that support informed decision-making.</p>
+					<p>I’m passionate about turning <strong>messy data into clarity</strong>—whether through analytics, model building, or process optimization.</p>
 
 					<hr />
 
@@ -56,23 +69,18 @@
 							<ul>
 								<li><strong>Data Analysis:</strong> SQL, Python, Tableau, Power BI</li>
 								<li><strong>Data Engineering:</strong> ETL pipelines, validation, Airflow</li>
-								<li><strong>Cloud:</strong> AWS (S3, Athena, EMR)</li>
 							</ul>
 						</div>
 						<div class="col-6 col-12-small">
 							<h3>AI & Automation</h3>
 							<ul>
 								<li><strong>Machine Learning:</strong> CNNs, ResNet50, MobileNetV2</li>
-								<li><strong>Automation:</strong> Python scripting, Batch processing</li>
-								<li><strong>Interests:</strong> MLOps, NLP, Generative AI</li>
+								<li><strong>Automation:</strong> Python scripting</li>
 							</ul>
 						</div>
 					</div>
 
 					<hr />
-
-					<h2>🔧 Tools & Technologies</h2>
-					<p>Python • SQL • Jupyter Notebook • Pandas • NumPy • TensorFlow/Keras • AWS • Apache Airflow • Tableau • Excel • Git • ChatGPT</p>
 
 					<ul class="actions">
 						<li><a href="index.html" class="button">Back to Projects</a></li>
@@ -101,9 +109,10 @@
 		<script src="assets/js/main.js"></script>
 		
 		<script>
-			document.querySelector('.protected-img').addEventListener('dragstart', function(e) {
-				e.preventDefault();
-			});
+			// Double-layer protection for the restricted image
+			const img = document.querySelector('.protected-img');
+			img.addEventListener('dragstart', e => e.preventDefault());
+			img.addEventListener('contextmenu', e => e.preventDefault());
 		</script>
 	</body>
 </html>
