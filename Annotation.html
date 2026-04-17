@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Annotation Projects - Object Detection Dataset Creation" />
+  <title>CVAT Annotation</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #0b1220;
+      color: #e5e7eb;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    nav h1 {
+      font-size: 1.1rem;
+      color: #38bdf8;
+    }
+
+    nav a {
+      color: #cbd5f5;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 140px 20px 80px;
+      text-align: center;
+      background: linear-gradient(135deg, #0f172a, #111c33);
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+    }
+
+    .hero p {
+      color: #94a3b8;
+      margin-top: 10px;
+      font-size: 1.1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 15px;
+      background: #38bdf8;
+      color: #0b1220;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 60px 20px;
+    }
+
+    section {
+      margin-bottom: 70px;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      border-left: 4px solid #38bdf8;
+      padding-left: 12px;
+    }
+
+    p {
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      margin-left: 20px;
+      color: #cbd5e1;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #111c33;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 8px;
+      background: #38bdf8;
+      color: #0b1220;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+      font-size: 0.9rem;
+      border-top: 1px solid #1f2937;
+    }
+
+    /* SMOOTH SCROLL */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <h1>CVAT Portfolio</h1>
+  <div>
+    <a href="#about">About</a>
+    <a href="#project">Project</a>
+    <a href="#process">Process</a>
+    <a href="#samples">Samples</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <h2>Computer Vision Annotation Portfolio</h2>
+  <p>Object Detection Dataset using CVAT for Fruit Ripeness Classification</p>
+  <div class="badge">YOLO • CVAT • Bounding Box Annotation</div>
+</header>
+
+<div class="container">
+
+  <section id="about">
+    <h3>About the Project</h3>
+    <p>
+      This portfolio showcases my work in building a labeled dataset using CVAT for object detection.
+      The dataset focuses on identifying fruit ripeness levels including ripe, unripe, and overripe categories.
+    </p>
+    <p>
+      The goal is to support machine learning models for agricultural automation and quality inspection systems.
+    </p>
+  </section>
+
+  <section id="project">
+    <h3>Project Overview</h3>
+    <ul>
+      <li>Designed annotation schema for fruit detection</li>
+      <li>Used bounding box annotation for object detection</li>
+      <li>Prepared dataset for YOLO model training</li>
+      <li>Ensured labeling consistency and accuracy</li>
+    </ul>
+  </section>
+
+  <section id="process">
+    <h3>Annotation Process</h3>
+    <ul>
+      <li>Created tasks in CVAT</li>
+      <li>Defined labels: ripe, unripe, overripe</li>
+      <li>Drew bounding boxes around fruit objects</li>
+      <li>Validated annotation quality</li>
+      <li>Exported dataset for ML pipeline</li>
+    </ul>
+  </section>
+
+  <section id="samples">
+    <h3>Sample Annotations</h3>
+    <div class="grid">
+
+      <div class="card">
+        <img src="images/annotation1.png" alt="sample annotation 1">
+        <div class="card-content">
+          <p>Annotated fruit detection</p>
+          <span class="tag">Ripe</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/annotation2.png" alt="sample annotation 2">
+        <div class="card-content">
+          <p>Bounding box labeling</p>
+          <span class="tag">Unripe</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/annotation3.png" alt="sample annotation 3">
+        <div class="card-content">
+          <p>Dataset preparation</p>
+          <span class="tag">Overripe</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/annotation4.png" alt="sample annotation 4">
+        <div class="card-content">
+          <p>Final labeled dataset</p>
+          <span class="tag">YOLO Ready</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  © 2026 Annotation Portfolio • Built for Machine Learning & Computer Vision
+</footer>
+
+</body>
+</html>
