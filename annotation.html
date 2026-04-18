@@ -1,32 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Annotation Case Study | Brendaline Portfolio</title>
+    <title>Annotation Case Study</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-
-    <!-- Small fix for thumbnail row -->
-    <style>
-        .thumb-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .thumb-row img {
-            width: 120px;
-            height: auto;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-        .thumb-row img:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 
 <body class="is-preload">
@@ -47,7 +26,7 @@
         </ul>
     </nav>
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT (UNCHANGED) -->
     <div id="main">
 
         <!-- TITLE -->
@@ -66,91 +45,210 @@
 
         <!-- PROBLEM -->
         <section class="post">
-            <header><h2>Problem</h2></header>
+            <header>
+                <h2>Problem</h2>
+            </header>
             <p>
                 Machine learning models require high-quality labeled datasets. However, inconsistent annotation
-                and unclear labeling standards can lead to poor model performance. The goal is to create:
+                and unclear labeling standards can lead to poor model performance. The goal of this project is to
+                create structured and reliable datasets for:
             </p>
             <ul>
                 <li>Fruit ripeness detection (object detection)</li>
-                <li>Breadfruit tree identification (classification)</li>
+                <li>Breadfruit tree identification (image classification)</li>
             </ul>
         </section>
 
         <!-- SOLUTION -->
         <section class="post">
-            <header><h2>Solution</h2></header>
+            <header>
+                <h2>Solution</h2>
+            </header>
+            <p>
+                I implemented two annotation workflows using different tools:
+            </p>
             <ul>
-                <li><strong>CVAT</strong> for object detection</li>
+                <li><strong>CVAT</strong> for bounding box annotation (object detection)</li>
                 <li><strong>Label Studio</strong> for image classification</li>
             </ul>
+            <p>
+                Each dataset was labeled using clear annotation guidelines to ensure consistency and accuracy.
+            </p>
         </section>
 
-        <!-- LABEL STUDIO -->
+        <!-- CVAT SECTION -->
+        <section class="post">
+            <header>
+                <h2>CVAT — Object Detection Workflow</h2>
+            </header>
+
+            <p>
+                Using CVAT, I created a dataset for fruit ripeness classification. Bounding boxes were applied
+                to identify and label fruits as ripe, unripe, or overripe.
+            </p>
+        </section>
+
+        <section class="posts">
+
+            <article>
+                <header><h3>Ripe Detection</h3></header>
+                <a class="image fit"><img src="images/annotation1.jpg" alt="" /></a>
+                <p>Accurate bounding box annotation for ripe fruit.</p>
+            </article>
+
+            <article>
+                <header><h3>Unripe Detection</h3></header>
+                <a class="image fit"><img src="images/annotation3.jpg" alt="" /></a>
+                <p>Consistent labeling using rectangle tools.</p>
+            </article>
+
+            <article>
+                <header><h3>Overripe Detection</h3></header>
+                <a class="image fit"><img src="images/annotation2.jpg" alt="" /></a>
+                <p>Clear distinction of fruit condition.</p>
+            </article>
+
+            <article>
+                <header><h3>Dataset Output</h3></header>
+                <a class="image fit"><img src="images/annotation4.png" alt="" /></a>
+                <p>Final dataset prepared for model training (YOLO format).</p>
+            </article>
+
+        </section>
+
+        <!-- LABEL STUDIO SECTION -->
         <section class="post">
             <header>
                 <h2>Label Studio — Image Classification Workflow</h2>
             </header>
 
             <p>
-                Label Studio was used to classify images into:
+                Label Studio was used to build a clean image classification dataset for identifying breadfruit trees.
+                Unlike CVAT (object detection), this workflow focuses on assigning a single label per image.
             </p>
 
-            <ul>
-                <li>breadfruit_tree</li>
-                <li>not_breadfruit_tree</li>
-            </ul>
+            <p>
+                The goal was to classify images into two categories:
+                <br>• breadfruit_tree
+                <br>• not_breadfruit_tree
+            </p>
 
             <hr>
 
-            <h3>Workflow Steps</h3>
+            <h3>Label Studio Workflow Steps</h3>
 
-            <p><strong>Step 1: Project Creation</strong></p>
+            <p><strong>Step 1: Project Creation</strong><br>
+            A new project was created in Label Studio and configured for image classification.</p>
             <a class="image fit"><img src="images/annotation5.jpg" alt="" /></a>
 
-            <p><strong>Step 2: Label Configuration</strong></p>
+            <p><strong>Step 2: Label Configuration</strong><br>
+            Defined classification labels:
+            <br>• breadfruit_tree
+            <br>• not_breadfruit_tree
+            </p>
             <a class="image fit"><img src="images/annotation6.jpg" alt="" /></a>
 
-            <p><strong>Step 3: Dataset Upload</strong></p>
+            <p><strong>Step 3: Dataset Upload</strong><br>
+            Uploaded images of breadfruit trees and other tree types into the project for annotation.</p>
             <a class="image fit"><img src="images/annotation15.jpg" alt="" /></a>
 
-            <p><strong>Step 4: Labeling Instructions</strong></p>
+            <p><strong>Step 4: Labeling Instructions</strong><br>
+            Each image was labeled based on visible tree characteristics. Only one label was assigned per image.</p>
             <a class="image fit"><img src="images/annotation13.jpg" alt="" /></a>
 
-            <p><strong>Step 5: Annotation Process</strong></p>
+            <p><strong>Step 5: Annotation Process</strong><br>
+            Images were manually reviewed and labeled using the classification interface to ensure accuracy and consistency across the dataset.
+            </p>
 
             <div class="thumb-row">
-                <a href="images/annotation7.jpg" target="_blank"><img src="images/annotation7.jpg"></a>
-                <a href="images/annotation8.jpg" target="_blank"><img src="images/annotation8.jpg"></a>
-                <a href="images/annotation9.jpg" target="_blank"><img src="images/annotation9.jpg"></a>
-                <a href="images/annotation10.jpg" target="_blank"><img src="images/annotation10.jpg"></a>
-                <a href="images/annotation11.jpg" target="_blank"><img src="images/annotation11.jpg"></a>
+
+                <a href="images/annotation7.jpg" target="_blank">
+                    <img src="images/annotation7.jpg" alt="">
+                </a>
+
+                <a href="images/annotation8.jpg" target="_blank">
+                    <img src="images/annotation8.jpg" alt="">
+                </a>
+
+                <a href="images/annotation9.jpg" target="_blank">
+                    <img src="images/annotation9.jpg" alt="">
+                </a>
+
+                <a href="images/annotation10.jpg" target="_blank">
+                    <img src="images/annotation10.jpg" alt="">
+                </a>
+
+                <a href="images/annotation11.jpg" target="_blank">
+                    <img src="images/annotation11.jpg" alt="">
+                </a>
+
             </div>
 
-            <p><strong>Step 6: Export Dataset</strong></p>
+            <p><strong>Step 6: Export Dataset</strong><br>
+            Final annotations were exported in JSON format for future machine learning use.</p>
             <a class="image fit"><img src="images/annotation14.jpg" alt="" /></a>
 
         </section>
 
+        <!-- LABEL STUDIO SAMPLES -->
+        <section class="posts">
+
+            <article>
+                <header><h3>Breadfruit Tree</h3></header>
+                <a class="image fit"><img src="images/breadfruit1.jpg" alt="" /></a>
+                <p>Correct classification based on identifiable leaf patterns and structure.</p>
+            </article>
+
+            <article>
+                <header><h3>Non-Breadfruit 1</h3></header>
+                <a class="image fit"><img src="images/notbreadfruit1.jpg" alt="" /></a>
+                <p>Different tree type labeled as not_breadfruit_tree.</p>
+            </article>
+
+            <article>
+                <header><h3>Non-Breadfruit 2</h3></header>
+                <a class="image fit"><img src="images/notbreadfruit2.jpg" alt="" /></a>
+                <p>Tree does not match breadfruit characteristics.</p>
+            </article>
+
+            <article>
+                <header><h3>Non-Breadfruit 3</h3></header>
+                <a class="image fit"><img src="images/notbreadfruit3.jpg" alt="" /></a>
+                <p>Unclear or different species classified conservatively.</p>
+            </article>
+
+        </section>
+
+        <!-- PROCESS -->
+        <section class="post">
+            <header>
+                <h2>Annotation Process</h2>
+            </header>
+
+            <ol>
+                <li>Collected and organized image datasets</li>
+                <li>Defined labeling guidelines for consistency</li>
+                <li>Annotated data using CVAT and Label Studio</li>
+                <li>Validated annotations for accuracy</li>
+                <li>Exported datasets in ML-ready formats (JSON, YOLO)</li>
+            </ol>
+        </section>
+
         <!-- RESULTS -->
         <section class="post">
-            <header><h2>Results</h2></header>
+            <header>
+                <h2>Results</h2>
+            </header>
+
             <ul>
-                <li>Clean annotated datasets</li>
-                <li>Consistent labeling across tools</li>
-                <li>ML-ready JSON exports</li>
+                <li>Structured and consistent annotation datasets</li>
+                <li>Ready for machine learning model training</li>
+                <li>Demonstrated experience in multiple annotation tools</li>
+                <li>Improved data quality through clear labeling standards</li>
             </ul>
         </section>
 
     </div>
-
-    <!-- FOOTER -->
-    <footer id="footer">
-        <section>
-            <h3>Email</h3>
-            <p><a href="mailto:enopia.brendaline@gmail.com">enopia.brendaline@gmail.com</a></p>
-        </section>
-    </footer>
 
 </div>
 
