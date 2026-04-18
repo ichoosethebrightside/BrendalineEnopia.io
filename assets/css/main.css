@@ -4706,3 +4706,22 @@ input, select, textarea {
     clear: both;
     margin-top: 0.5em;
 }
+<style>
+.thumb-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.thumb-row img {
+    width: 120px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.thumb-row img:hover {
+    transform: scale(1.05);
+}
+</style>
